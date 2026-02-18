@@ -6,11 +6,13 @@ export interface JiraQuery extends DataQuery {
   quantile: number;
   startStatus: string;
   endStatus: string;
+  activeStatuses: string;
   metric: string;
 }
 
 export const METRICS = {
   CYCLE_TIME : 'cycletime',
+  ISSUE_FLOW : 'issue_flow',
   NONE : 'none',
   CHANGELOG_RAW: 'changelogRaw',
   JQL: 'jql',

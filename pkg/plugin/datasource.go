@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"math"
 	"sort"
 	"strings"
 	"time"
@@ -12,8 +11,8 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
-	"github.com/achan/grafana-jira-datasource/pkg/jira"
-	"github.com/achan/grafana-jira-datasource/pkg/models"
+	"github.com/allenrchan/arc-grafana-jira-datasource/pkg/jira"
+	"github.com/allenrchan/arc-grafana-jira-datasource/pkg/models"
 )
 
 // Make sure Datasource implements required interfaces. This is important to do
@@ -60,7 +59,7 @@ func (d *Datasource) QueryData(ctx context.Context, req *backend.QueryDataReques
 
 	// loop over queries and execute them individually.
 	for _, q := range req.Queries {
-		res := d.query(ctx, client, q)
+		res := d.query(ctx, client, q, config.URL)
 
 		// save the response in a hashmap
 		// based on with RefID as identifier
@@ -72,13 +71,14 @@ func (d *Datasource) QueryData(ctx context.Context, req *backend.QueryDataReques
 
 type queryModel struct {
 	JQLQuery    string  `json:"jqlQuery"`
-	Quantile    float64 `json:"quantile"`
-	StartStatus string  `json:"startStatus"`
-	EndStatus   string  `json:"endStatus"`
-	Metric      string  `json:"metric"`
+	Quantile       float64 `json:"quantile"`
+	StartStatus    string  `json:"startStatus"`
+	EndStatus      string  `json:"endStatus"`
+	ActiveStatuses string  `json:"activeStatuses"`
+	Metric         string  `json:"metric"`
 }
 
-func (d *Datasource) query(_ context.Context, client *jira.Client, query backend.DataQuery) backend.DataResponse {
+func (d *Datasource) query(_ context.Context, client *jira.Client, query backend.DataQuery, baseURL string) backend.DataResponse {
 	// var response backend.DataResponse // Unused variable removed
 
 	// Unmarshal the JSON into our queryModel.
@@ -135,7 +135,16 @@ func (d *Datasource) query(_ context.Context, client *jira.Client, query backend
 		// Limitation: User JQL must NOT end with ORDER BY for this to work perfectly.
 		// Or we can warn.
 		
-		jql += fmt.Sprintf(" AND updated >= '%s'", fromTime)
+		// Updated Logic: We want to fetch tickets that are either:
+		// 1. Currently IN PROGRESS (statusCategory = 4, "In Progress" / "Blue" / "Yellow")
+		//    This catches "Stale WIP" - items started long ago but sitting untouched.
+		// 2. BACKLOG items (statusCategory = 2, "To Do" / "Grey") ONLY if updated recently.
+		//    This avoids fetching the entire historic backlog.
+		// 3. DONE items (statusCategory = 3, "Done" / "Green") ONLY if they BECAME Done recently.
+		//    We use statusCategoryChangedDate >= From to filter out tickets that were bulk-edited (updated=recent)
+		//    but whose "Done" state hasn't actually changed (statusCategoryChangedDate=old).
+		
+		jql += fmt.Sprintf(" AND (statusCategory = 4 OR (statusCategory = 2 AND updated >= '%s') OR (statusCategory = 3 AND statusCategoryChangedDate >= '%s'))", fromTime, fromTime)
 	}
 
 	// Fetch issues from Jira
@@ -150,13 +159,277 @@ func (d *Datasource) query(_ context.Context, client *jira.Client, query backend
 	switch qm.Metric {
 	case "changelogRaw":
 		return d.getChangelogRawData(issues)
-	case "cycletime":
-		return d.getCycletimeData(issues, qm, query.TimeRange)
 	case "jql":
 		return d.getJQLData(issues)
+	case "issue_flow":
+		return d.getFlowData(issues, qm, query.TimeRange, baseURL)
 	default:
 		return backend.ErrDataResponse(backend.StatusBadRequest, fmt.Sprintf("unknown metric: %s", qm.Metric))
 	}
+}
+
+// Struct to hold analyzed issue data
+type issueData struct {
+	Issue           jira.Issue
+	Created         time.Time
+	Started         *time.Time
+	Completed       *time.Time
+	LeadTimeDays    *float64
+	CycleTimeDays   *float64
+	ActiveTimeDays  *float64
+	FlowEfficiency  *float64
+	Assignee        string
+	AssigneeEmail   string
+	AssigneeID      string
+	Engineer        string
+	EngineerEmail   string
+	EngineerID      string
+	QA              string
+	QAEmail         string
+	QAID            string
+	StoryPoints     *float64
+	QAStoryPoints   *float64
+	Status          string
+	StatusCategory  string
+	Resolution      string
+	AgeInCurrentStatus *float64
+}
+
+// Helper to analyze a single issue
+func (d *Datasource) analyzeIssue(issue jira.Issue, startStatuses, endStatuses, activeStatuses map[string]bool) issueData {
+	data := issueData{Issue: issue}
+
+		// Parse Created Time
+		createdStr, _ := issue.Fields["created"].(string)
+		if t, err := time.Parse("2006-01-02T15:04:05.000-0700", createdStr); err == nil {
+			data.Created = t
+		}
+
+		// Helper to extract user fields (Display Name and Email)
+		getUser := func(field string) (string, string, string) {
+			if u, ok := issue.Fields[field].(map[string]interface{}); ok {
+				displayName, _ := u["displayName"].(string)
+				emailAddress, _ := u["emailAddress"].(string)
+				accountId, _ := u["accountId"].(string)
+				
+				if displayName == "" {
+					displayName = "Unassigned"
+				}
+				return displayName, emailAddress, accountId
+			}
+			return "Unassigned", "", ""
+		}
+
+		data.Assignee, data.AssigneeEmail, data.AssigneeID = getUser("assignee")
+		data.Engineer, data.EngineerEmail, data.EngineerID = getUser("customfield_10943")
+		data.QA, data.QAEmail, data.QAID = getUser("customfield_10641")
+
+		// Helper to extract float fields
+		getFloat := func(field string) *float64 {
+			if val, ok := issue.Fields[field].(float64); ok {
+				return &val
+			}
+			return nil
+		}
+
+		data.StoryPoints = getFloat("customfield_10028")
+		data.QAStoryPoints = getFloat("customfield_10603")
+
+		// Extract Status and Resolution
+		if st, ok := issue.Fields["status"].(map[string]interface{}); ok {
+			data.Status, _ = st["name"].(string)
+			if cat, ok := st["statusCategory"].(map[string]interface{}); ok {
+				data.StatusCategory, _ = cat["name"].(string)
+			}
+		}
+		if res, ok := issue.Fields["resolution"].(map[string]interface{}); ok {
+			data.Resolution, _ = res["name"].(string)
+		}
+
+		// Analyze Changelog
+		type Transition struct {
+			Time   time.Time
+			Status string
+		}
+		transitions := []Transition{}
+
+	if issue.Changelog != nil {
+		for _, history := range issue.Changelog.Histories {
+			t, err := time.Parse("2006-01-02T15:04:05.000-0700", history.Created)
+			if err != nil {
+				continue
+			}
+			for _, item := range history.Items {
+				if item.Field == "status" {
+					transitions = append(transitions, Transition{Time: t, Status: item.ToString})
+					
+					// Start Logic: Earliest transition to Start Status
+					if startStatuses[item.ToString] {
+						if data.Started == nil || t.Before(*data.Started) {
+							ts := t
+							data.Started = &ts
+						}
+					}
+					// End Logic: Latest transition to End Status
+					if endStatuses[item.ToString] {
+						if data.Completed == nil || t.After(*data.Completed) {
+							ts := t
+							data.Completed = &ts
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Status Category Changed Date Logic to fix "Bulk Move Noise"
+	// If current status is Done/Resolved (statusCategory = Done/3), check statuscategorychangedate.
+	// If we calculated a Completed time that is much LATER than statuscategorychangedate,
+	// it implies the recent transition was a lateral move (Done -> Done), e.g. Done -> Resolved.
+	// In that case, the TRUE completion time was the statuscategorychangedate.
+	
+	// 1. Get statuscategorychangedate
+	statusCatDateStr, _ := issue.Fields["statuscategorychangedate"].(string)
+	if statusCatDateStr != "" {
+		if scTime, err := time.Parse("2006-01-02T15:04:05.000-0700", statusCatDateStr); err == nil {
+			// 2. Check if current status category is Done (id 3 or key "done")
+			// We already extracted data.StatusCategory name (e.g. "Done").
+			// But let's check the ID or key if possible for robustness, or rely on the Name "Done".
+			// Standard Jira: "Done" (Green).
+			// We can also assume that if completedTime is set, the user considers it Done.
+			
+			if data.Completed != nil {
+				// Check if statusCategory is Done-like.
+				isDoneCategory := false
+				if st, ok := issue.Fields["status"].(map[string]interface{}); ok {
+					if cat, ok := st["statusCategory"].(map[string]interface{}); ok {
+						if key, ok := cat["key"].(string); ok && key == "done" {
+							isDoneCategory = true
+						}
+					}
+				}
+
+				if isDoneCategory {
+					// Compare times. If computed Completed is > scTime by a margin (e.g. 24h), override.
+					// Using 1 hour to be safe against minor drifts/migrations.
+					if data.Completed.After(scTime.Add(1 * time.Hour)) {
+						// The transition we found in changelog (e.g. yesterday) is LATER than when the category changed (years ago).
+						// This means the ticket has been "Done" since years ago.
+						data.Completed = &scTime
+					}
+				}
+			}
+		}
+	}
+	
+	// Determine Initial Status
+	currentStatus := "Unknown"
+	// Check changelog for first transition's FromString
+	if issue.Changelog != nil {
+		var earliestTime time.Time
+		found := false
+		for _, history := range issue.Changelog.Histories {
+			t, err := time.Parse("2006-01-02T15:04:05.000-0700", history.Created)
+			if err != nil { continue }
+			for _, item := range history.Items {
+				if item.Field == "status" {
+					if !found || t.Before(earliestTime) {
+						earliestTime = t
+						currentStatus = item.FromString
+						found = true
+					}
+				}
+			}
+		}
+	}
+	// Fallback to current status if no history
+	if currentStatus == "Unknown" {
+		if st, ok := issue.Fields["status"].(map[string]interface{}); ok {
+			if name, ok := st["name"].(string); ok {
+				currentStatus = name
+			}
+		}
+	}
+
+	// Check if initial status is Start/End
+	if startStatuses[currentStatus] {
+		if data.Started == nil || data.Created.Before(*data.Started) {
+			t := data.Created
+			data.Started = &t
+		}
+	}
+	if endStatuses[currentStatus] {
+		if data.Completed == nil || data.Created.After(*data.Completed) {
+			t := data.Created
+			data.Completed = &t
+		}
+	}
+
+	// Calculate Lead Time & Cycle Time
+	if data.Completed != nil && !data.Created.IsZero() {
+		diff := data.Completed.Sub(data.Created).Hours() / 24.0
+		data.LeadTimeDays = &diff
+	}
+	if data.Started != nil && data.Completed != nil {
+		diff := data.Completed.Sub(*data.Started).Hours() / 24.0
+		if diff < 0 { diff = 0 }
+		data.CycleTimeDays = &diff
+	}
+
+	// Calculate Active Time
+	// Sort transitions
+	sort.Slice(transitions, func(i, j int) bool {
+		return transitions[i].Time.Before(transitions[j].Time)
+	})
+
+	activeDuration := 0.0
+	lastTime := data.Created
+	curr := currentStatus
+
+	for _, tr := range transitions {
+		if activeStatuses[curr] {
+			activeDuration += tr.Time.Sub(lastTime).Hours()
+		}
+		curr = tr.Status
+		lastTime = tr.Time
+	}
+	
+	endTime := time.Now()
+	if data.Completed != nil {
+		endTime = *data.Completed
+	}
+	if lastTime.Before(endTime) {
+		if activeStatuses[curr] {
+			activeDuration += endTime.Sub(lastTime).Hours()
+		}
+	}
+
+	val := activeDuration / 24.0
+	data.ActiveTimeDays = &val
+
+	// Calculate Age in Current Status
+	// lastTime is the start of the current segment (either Created or Last Transition)
+	// We calculate age only if the issue is NOT completed (WIP).
+	if data.Completed == nil {
+		ageDuration := endTime.Sub(lastTime).Hours() / 24.0
+		data.AgeInCurrentStatus = &ageDuration
+	}
+
+	// Calculate Efficiency
+	if data.CycleTimeDays != nil && *data.CycleTimeDays > 0 {
+		eff := (*data.ActiveTimeDays / *data.CycleTimeDays) * 100.0
+		data.FlowEfficiency = &eff
+	} else if data.CycleTimeDays != nil && *data.CycleTimeDays == 0 {
+		if *data.ActiveTimeDays > 0 {
+			v := 100.0
+			data.FlowEfficiency = &v
+		} else {
+			v := 0.0
+			data.FlowEfficiency = &v
+		}
+	}
+
+	return data
 }
 
 func (d *Datasource) getJQLData(issues []jira.Issue) backend.DataResponse {
@@ -175,12 +448,10 @@ func (d *Datasource) getJQLData(issues []jira.Issue) backend.DataResponse {
 		if s, ok := issue.Fields["summary"].(string); ok {
 			summary = s
 		}
-		
+
 		status := ""
 		if st, ok := issue.Fields["status"].(map[string]interface{}); ok {
-			if name, ok := st["name"].(string); ok {
-				status = name
-			}
+			status, _ = st["name"].(string)
 		}
 
 		issueType := ""
@@ -254,160 +525,45 @@ func (d *Datasource) getChangelogRawData(issues []jira.Issue) backend.DataRespon
 	return response
 }
 
-func (d *Datasource) getCycletimeData(issues []jira.Issue, qm queryModel, timeRange backend.TimeRange) backend.DataResponse {
+func (d *Datasource) getFlowData(issues []jira.Issue, qm queryModel, timeRange backend.TimeRange, baseURL string) backend.DataResponse {
 	var response backend.DataResponse
 
-	frame := data.NewFrame("response",
-		data.NewField("IssueKey", nil, []string{}),
-		data.NewField("IssueType", nil, []string{}),
-		data.NewField("Project", nil, []string{}),
-		data.NewField("StartStatus", nil, []string{}),
-		data.NewField("EndStatus", nil, []string{}),
-		data.NewField("EndStatusCreated", nil, []time.Time{}),
-		data.NewField("CycleTime", nil, []float64{}),
-		data.NewField("Quantile", nil, []float64{}),
-	)
+	// Parse Statuses
+	parseStatuses := func(s string) map[string]bool {
+		m := make(map[string]bool)
+		raw := strings.Trim(s, "{}")
+		for _, p := range strings.Split(raw, ",") {
+			t := strings.TrimSpace(p)
+			if t != "" {
+				m[t] = true
+			}
+		}
+		return m
+	}
+	startS := parseStatuses(qm.StartStatus)
+	endS := parseStatuses(qm.EndStatus)
+	activeS := parseStatuses(qm.ActiveStatuses)
 
+	// Analyze all issues
+	var analyzed []issueData
 	var cycleTimes []float64
 
 	for _, issue := range issues {
-		if issue.Changelog == nil {
+		a := d.analyzeIssue(issue, startS, endS, activeS)
+		
+		// Filter out issues that were completed BEFORE the requested time window.
+		// This removes "noise" from old tickets that were recently updated (commented, labeled) but finished long ago.
+		// We keep issues that are:
+		// 1. WIP (Completed is nil)
+		// 2. Completed WITHIN the window (Completed >= From)
+		// 3. Completed AFTER the window? (Unlikely given updated filter, but valid to keep)
+		if a.Completed != nil && a.Completed.Before(timeRange.From) {
 			continue
 		}
 
-		issueType := "Unknown"
-		if it, ok := issue.Fields["issuetype"].(map[string]interface{}); ok {
-			if name, ok := it["name"].(string); ok {
-				issueType = name
-			}
-		}
-
-		project := ""
-		if p, ok := issue.Fields["project"].(map[string]interface{}); ok {
-			// Try key, then name
-			if key, ok := p["key"].(string); ok {
-				project = key
-			} else if name, ok := p["name"].(string); ok {
-				project = name
-			}
-		}
-
-		var startCreated, endCreated time.Time
-		var foundStart, foundEnd bool
-
-		// For now we iterate as is.
-
-		// Handle Grafana multi-value variable format "{Val1,Val2}" by stripping braces
-		startStatusRaw := strings.Trim(qm.StartStatus, "{}")
-		endStatusRaw := strings.Trim(qm.EndStatus, "{}")
-
-		startStatuses := strings.Split(startStatusRaw, ",")
-		endStatuses := strings.Split(endStatusRaw, ",")
-		for i, s := range startStatuses {
-			startStatuses[i] = strings.TrimSpace(s)
-		}
-		for i, s := range endStatuses {
-			endStatuses[i] = strings.TrimSpace(s)
-		}
-
-		for _, history := range issue.Changelog.Histories {
-			createdTime, err := time.Parse("2006-01-02T15:04:05.000-0700", history.Created)
-			if err != nil {
-				continue
-			}
-
-			// Filter by time range
-			if createdTime.Before(timeRange.From) || createdTime.After(timeRange.To) {
-				continue
-			}
-
-			for _, item := range history.Items {
-				if item.Field == "status" {
-					isStart := false
-					for _, s := range startStatuses {
-						if item.ToString == s {
-							isStart = true
-							break
-						}
-					}
-					
-					isEnd := false
-					for _, s := range endStatuses {
-						if item.ToString == s {
-							isEnd = true
-							break
-						}
-					}
-
-					if isStart {
-						// Logic: use earliest timestamp for start status
-						// If we haven't found a start status yet, or if this one is earlier than the existing one, update it.
-						// Wait, histories are usually chronological (or reverse?). Jira API returns reverse chronological by default in some views, but standard changelog is chronological?
-						// The current loop iterates histories in order. If they are chronological, the FIRST match is the earliest.
-						// If they are reverse chronological, the LAST match is the earliest.
-						// Assuming standard chronological order from search/jql expand:
-						
-						// If we want the EARLIEST occurrence of ANY start status:
-						if !foundStart {
-							startCreated = createdTime
-							foundStart = true
-						} else {
-							// If we already found a start, only update if this one is earlier (unlikely if loop is chronological) 
-							// OR if we want to reset start logic?
-							// The user requirement: "using the earlier date for the start".
-							// If an issue moves StartA -> StartB -> End, cycle time should be StartA to End?
-							// Yes, "earliest date for start".
-							if createdTime.Before(startCreated) {
-								startCreated = createdTime
-							}
-						}
-					}
-					
-					if isEnd {
-						// Logic: use latest timestamp for end status
-						// If we want LATEST occurrence of ANY end status:
-						if !foundEnd {
-							endCreated = createdTime
-							foundEnd = true
-						} else {
-							if createdTime.After(endCreated) {
-								endCreated = createdTime
-							}
-						}
-					}
-					
-					// We only emit a row if we have both start and end, AND we are processing the END transition?
-					// The previous logic emitted a row *every time* both flags were true inside the loop.
-					// This means if I have Start -> End -> End2, it emitted for End and End2 (using same Start).
-					// If I have Start -> Start2 -> End, it emitted for End (using Start2 if it overwrote, or Start1).
-					
-					// User logic: "using the earlier date for the start and later date for the end".
-					// This implies we should process the WHOLE history for an issue, find the min(Start) and max(End), and THEN emit ONE row per issue (or per cycle?).
-					// If we emit one row per issue, we should move the `frame.AppendRow` OUTSIDE the history loop.
-					
-					// HOWEVER, if an issue cycles multiple times (Start -> End -> Start -> End), do we want multiple rows?
-					// Usually yes. But the user said "earliest start and latest end". This might imply one single cycle per issue spanning the whole range.
-					// Let's assume one cycle per issue for "Earliest Start" and "Latest End" logic across the filtered time range.
-					// If so, we just accumulate timestamps in the loop and append ONCE after the loop.
-				}
-			}
-		}
-		
-		if foundStart && foundEnd {
-			diff := math.Abs(float64(endCreated.Sub(startCreated).Milliseconds()))
-			cycleTime := math.Ceil(diff/(1000*3600*24)) + 1
-			
-			frame.AppendRow(
-				issue.Key,
-				issueType,
-				project,
-				qm.StartStatus, // We return the config string, not the specific matched status, or we could return "Multiple"
-				qm.EndStatus,
-				endCreated,
-				cycleTime,
-				0.0,
-			)
-			cycleTimes = append(cycleTimes, cycleTime)
+		analyzed = append(analyzed, a)
+		if a.CycleTimeDays != nil {
+			cycleTimes = append(cycleTimes, *a.CycleTimeDays)
 		}
 	}
 
@@ -415,12 +571,9 @@ func (d *Datasource) getCycletimeData(issues []jira.Issue, qm queryModel, timeRa
 	quantileValue := 0.0
 	if len(cycleTimes) > 0 {
 		sort.Float64s(cycleTimes)
-		// Simple quantile implementation
-		// Index = q * (n-1)
 		pos := (qm.Quantile / 100.0) * float64(len(cycleTimes)-1)
 		base := int(pos)
 		rest := pos - float64(base)
-		
 		if base+1 < len(cycleTimes) {
 			quantileValue = cycleTimes[base] + rest*(cycleTimes[base+1]-cycleTimes[base])
 		} else {
@@ -428,18 +581,94 @@ func (d *Datasource) getCycletimeData(issues []jira.Issue, qm queryModel, timeRa
 		}
 	}
 
-	// Update Quantile column
-	// rows := frame.Rows() // Unused variable removed
-	for i := 0; i < frame.Rows(); i++ {
-		// Update the last column (Quantile is index 7)
-		frame.Fields[7].Set(i, quantileValue)
-	}
+	// Construct Frame based on Metric type
+	// New Issue Flow Format
+	frame := data.NewFrame("response",
+		data.NewField("IssueKey", nil, []string{}),
+		data.NewField("Summary", nil, []string{}),
+		data.NewField("IssueType", nil, []string{}),
+		data.NewField("Project", nil, []string{}),
+		data.NewField("Created", nil, []time.Time{}),
+		data.NewField("Started", nil, []*time.Time{}),
+		data.NewField("Completed", nil, []*time.Time{}),
+		data.NewField("LeadTimeDays", nil, []*float64{}),
+		data.NewField("CycleTimeDays", nil, []*float64{}),
+		data.NewField("ActiveTimeDays", nil, []*float64{}),
+		data.NewField("FlowEfficiency", nil, []*float64{}),
+		data.NewField("Quantile", nil, []*float64{}),
+		data.NewField("Assignee", nil, []string{}),
+		data.NewField("AssigneeEmail", nil, []string{}),
+		data.NewField("AssigneeID", nil, []string{}),
+		data.NewField("Engineer", nil, []string{}),
+		data.NewField("EngineerEmail", nil, []string{}),
+		data.NewField("EngineerID", nil, []string{}),
+		data.NewField("QA", nil, []string{}),
+		data.NewField("QAEmail", nil, []string{}),
+		data.NewField("QAID", nil, []string{}),
+		data.NewField("StoryPoints", nil, []*float64{}),
+		data.NewField("QAStoryPoints", nil, []*float64{}),
+		data.NewField("Status", nil, []string{}),
+		data.NewField("StatusCategory", nil, []string{}),
+		data.NewField("Resolution", nil, []string{}),
+		data.NewField("AgeInCurrentStatus", nil, []*float64{}),
+	)
 
+	for _, a := range analyzed {
+		// Extract fields
+		summary := ""
+		if s, ok := a.Issue.Fields["summary"].(string); ok {
+			summary = s
+		}
+		issueType := "Unknown"
+		if it, ok := a.Issue.Fields["issuetype"].(map[string]interface{}); ok {
+			if name, ok := it["name"].(string); ok {
+				issueType = name
+			}
+		}
+		project := ""
+		if p, ok := a.Issue.Fields["project"].(map[string]interface{}); ok {
+			if key, ok := p["key"].(string); ok {
+				project = key
+			} else if name, ok := p["name"].(string); ok {
+			project = name
+			}
+		}
+
+		frame.AppendRow(
+			a.Issue.Key,
+			summary,
+			issueType,
+			project,
+			a.Created,
+			a.Started,
+			a.Completed,
+			a.LeadTimeDays,
+			a.CycleTimeDays,
+			a.ActiveTimeDays,
+			a.FlowEfficiency,
+			&quantileValue,
+			a.Assignee,
+			a.AssigneeEmail,
+			a.AssigneeID,
+			a.Engineer,
+			a.EngineerEmail,
+			a.EngineerID,
+			a.QA,
+			a.QAEmail,
+			a.QAID,
+			a.StoryPoints,
+			a.QAStoryPoints,
+			a.Status,
+			a.StatusCategory,
+			a.Resolution,
+			a.AgeInCurrentStatus,
+		)
+	}
 	response.Frames = append(response.Frames, frame)
+
 	return response
 }
 
-// CheckHealth handles health checks sent from Grafana to the plugin.
 func (d *Datasource) CheckHealth(_ context.Context, req *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
 	res := &backend.CheckHealthResult{}
 	config, err := models.LoadPluginSettings(*req.PluginContext.DataSourceInstanceSettings)

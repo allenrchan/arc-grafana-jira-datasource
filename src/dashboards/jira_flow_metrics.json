@@ -1,0 +1,680 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "points",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 7,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "symlog"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed+area"
+            }
+          },
+          "fieldMinMax": false,
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "View Work Item ${__data.fields.IssueKey}",
+              "url": "https://lirvanalabs.atlassian.net/browse/${__data.fields.IssueKey}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "d"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "hoverProximity": 5,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Cycle Time",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "applyTo": {
+              "id": "byType",
+              "options": "number"
+            },
+            "configRefId": "A",
+            "mappings": [
+              {
+                "fieldName": "Quantile",
+                "handlerArguments": {
+                  "threshold": {
+                    "color": "light-red"
+                  }
+                },
+                "handlerKey": "threshold1",
+                "reducerId": "mean"
+              },
+              {
+                "fieldName": "Summary",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "IssueType",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Created",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Started",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "LeadTimeDays",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "ActiveTimeDays",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "FlowEfficiency",
+                "handlerKey": "__ignore"
+              }
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "Completed": false,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": false,
+              "FlowEfficiency": true,
+              "IssueKey": false,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Quantile": true,
+              "Started": true,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Project": "",
+              "Quantile": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Project"
+              }
+            ]
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Project"
+            ],
+            "keepFields": true,
+            "naming": {
+              "asLabels": true
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "CycleTimeDays (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "(IssueKey|Project|Completed|IssueLink) (.*)[\\s\\S]",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.9,
+            "drawStyle": "bars",
+            "fillOpacity": 61,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": true,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "fieldMinMax": false,
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "View Space ${__field.displayName}",
+              "url": "https://lirvanalabs.atlassian.net/browse/${__field.displayName}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Throughput",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Completed"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "dateFormat": "YYYY-MM-DD",
+                "destinationType": "string",
+                "targetField": "Completed",
+                "timezone": "utc"
+              },
+              {
+                "dateFormat": "YYYY-MM-DD",
+                "destinationType": "time",
+                "targetField": "Completed"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Completed": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "CompletedDate": {
+                "aggregations": []
+              },
+              "IssueKey": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "Project": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Project"
+            ],
+            "keepFields": false,
+            "naming": {
+              "asLabels": false
+            }
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "Completed",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "IssueKey \\(count\\) (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "orderBy": [
+              {
+                "desc": false,
+                "name": "name",
+                "type": "label"
+              }
+            ],
+            "orderByMode": "auto",
+            "renameByName": {
+              "KIDS": "",
+              "PLAT": ""
+            }
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "achan-arcjira-datasource",
+        "uid": "achan-arcjira-datasource"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 3,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "activeStatuses": "Needs Triaging, To Do, Next Up, In Progress, Changes Requested, Under Art Review, Under Engineering Review, Reviews Complete, Ready for QA, Ready for QA as Epic, Under QA Review, Under QA Review as Epic, QA Changes Requested, Ready for Release, In Release Testing, Release Accepted, Done",
+          "datasource": {
+            "type": "achan-arcjira-datasource",
+            "uid": "achan-arcjira-datasource"
+          },
+          "endStatus": "${end_status}",
+          "jqlQuery": "project in ('QA','PLAT','KIDS','TEACH','LABS')",
+          "metric": "issue_flow",
+          "quantile": 85,
+          "refId": "A",
+          "startStatus": "${start_status}"
+        }
+      ],
+      "title": "raw",
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": [
+            "In Progress"
+          ],
+          "value": [
+            "In Progress"
+          ]
+        },
+        "label": "Start Status",
+        "multi": true,
+        "name": "start_status",
+        "options": [
+          {
+            "selected": false,
+            "text": "Needs Triaging",
+            "value": "Needs Triaging"
+          },
+          {
+            "selected": false,
+            "text": "To Do",
+            "value": "To Do"
+          },
+          {
+            "selected": false,
+            "text": "Next Up",
+            "value": "Next Up"
+          },
+          {
+            "selected": true,
+            "text": "In Progress",
+            "value": "In Progress"
+          },
+          {
+            "selected": false,
+            "text": "Reviews Complete",
+            "value": "Reviews Complete"
+          },
+          {
+            "selected": false,
+            "text": "Ready for QA",
+            "value": "Ready for QA"
+          },
+          {
+            "selected": false,
+            "text": "Ready for QA as Epic",
+            "value": "Ready for QA as Epic"
+          },
+          {
+            "selected": false,
+            "text": "Ready for Release",
+            "value": "Ready for Release"
+          },
+          {
+            "selected": false,
+            "text": "Release Accepted",
+            "value": "Release Accepted"
+          },
+          {
+            "selected": false,
+            "text": "Done",
+            "value": "Done"
+          }
+        ],
+        "query": "Needs Triaging, To Do, Next Up, In Progress, Reviews Complete, Ready for QA, Ready for QA as Epic, Ready for Release, Release Accepted, Done",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": [
+            "Done"
+          ],
+          "value": [
+            "Done"
+          ]
+        },
+        "label": "End Status",
+        "multi": true,
+        "name": "end_status",
+        "options": [
+          {
+            "selected": false,
+            "text": "Reviews Complete",
+            "value": "Reviews Complete"
+          },
+          {
+            "selected": false,
+            "text": "Ready for QA",
+            "value": "Ready for QA"
+          },
+          {
+            "selected": false,
+            "text": "Ready for QA as Epic",
+            "value": "Ready for QA as Epic"
+          },
+          {
+            "selected": false,
+            "text": "Ready for Release",
+            "value": "Ready for Release"
+          },
+          {
+            "selected": false,
+            "text": "Release Accepted",
+            "value": "Release Accepted"
+          },
+          {
+            "selected": true,
+            "text": "Done",
+            "value": "Done"
+          }
+        ],
+        "query": "Reviews Complete, Ready for QA, Ready for QA as Epic, Ready for Release, Release Accepted, Done",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-14d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Jira Flow Metrics",
+  "uid": "f4eddd49-8295-4922-8293-05a01d9f11d5",
+  "version": 28
+}

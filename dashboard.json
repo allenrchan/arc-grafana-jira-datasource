@@ -1,0 +1,3959 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 4259097800622080,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 70,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 6,
+        "y": 0
+      },
+      "id": 21,
+      "options": {
+        "alignValue": "left",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "New panel",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": true,
+              "Created": true,
+              "CycleTimeDays": true,
+              "Engineer": true,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Project": true,
+              "QA": true,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": true,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The number of work items completed over the selected date range, grouped by the Engineer Assignee.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 9,
+        "x": 0,
+        "y": 8
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Dev Work Items Delivered (count)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "AgeInCurrentStatus": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": true,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": true,
+              "Engineer": false,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": false,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Project": true,
+              "QA": true,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": true,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": true,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderBy": [],
+            "orderByMode": "manual",
+            "renameByName": {
+              "IssueKey": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Engineer"
+              }
+            ]
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Engineer": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "IssueKey": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Engineer"
+            ],
+            "keepFields": false,
+            "naming": {
+              "asLabels": true
+            }
+          }
+        },
+        {
+          "disabled": true,
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": true,
+            "mode": "reduceFields",
+            "reducers": [
+              "count"
+            ]
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "IssueKey (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "\\(count\\) (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "\\(count\\)",
+            "renamePattern": "Unassigned"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The number of work items completed over the selected date range, grouped by the QA Assignee.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 9,
+        "y": 8
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "QA Work Items Delivered (count)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "AgeInCurrentStatus": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": true,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": true,
+              "Engineer": true,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": false,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Project": true,
+              "QA": false,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": true,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": true,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderBy": [],
+            "orderByMode": "manual",
+            "renameByName": {
+              "IssueKey": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "QA"
+              }
+            ]
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "QA"
+            ],
+            "keepFields": false,
+            "naming": {
+              "asLabels": true
+            }
+          }
+        },
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": true,
+            "mode": "reduceFields",
+            "reducers": [
+              "count"
+            ]
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "IssueKey (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "IssueKey",
+            "renamePattern": "Unassigned"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The number of work items that have been started and remain either active or waiting",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 11,
+        "x": 13,
+        "y": 8
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Current Work In Progress (count)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "regex",
+                  "options": {
+                    "value": "Won't Do|Done"
+                  }
+                },
+                "fieldName": "Resolution"
+              },
+              {
+                "config": {
+                  "id": "regex",
+                  "options": {
+                    "value": "Needs Triaging|To Do|Next Up|Won't Do|Release Accepted"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "AgeInCurrentStatus": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": true,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": true,
+              "Engineer": true,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": false,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Project": true,
+              "QA": true,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": true,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": true,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "IssueKey": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Assignee"
+              }
+            ]
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Assignee": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "IssueKey": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Assignee"
+            ],
+            "keepFields": false
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "IssueKey \\(count\\) (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "IssueKey \\(count\\)",
+            "renamePattern": "Unassigned"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The number of Story Points completed over the selected date range, grouped by the Engineer Assignee.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 9,
+        "x": 0,
+        "y": 13
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Dev Story Points Delivered (sum)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "AgeInCurrentStatus": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": true,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": true,
+              "Engineer": false,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": true,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Project": true,
+              "QA": true,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": true,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": false,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderBy": [],
+            "orderByMode": "manual",
+            "renameByName": {
+              "IssueKey": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Engineer"
+              }
+            ]
+          }
+        },
+        {
+          "disabled": true,
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Engineer": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "IssueKey": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "StoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Engineer"
+            ],
+            "keepFields": false,
+            "naming": {
+              "asLabels": true
+            }
+          }
+        },
+        {
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": true,
+            "mode": "reduceFields",
+            "reducers": [
+              "sum"
+            ]
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "StoryPoints (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "StoryPoints",
+            "renamePattern": "Unassigned"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The number of QA Story Points completed over the selected date range, grouped by the QA Assignee.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 9,
+        "y": 13
+      },
+      "id": 13,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "QA Story Points Delivered (sum)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "AgeInCurrentStatus": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "Completed": true,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": true,
+              "Engineer": true,
+              "EngineerEmail": true,
+              "FlowEfficiency": true,
+              "IssueKey": true,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Project": true,
+              "QA": false,
+              "QAEmail": true,
+              "QAStoryPoints": false,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": true,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderBy": [],
+            "orderByMode": "manual",
+            "renameByName": {
+              "Engineer": "",
+              "IssueKey": "",
+              "QA": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "QA"
+              }
+            ]
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Engineer": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "QA": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "QAStoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "StoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "QA"
+            ],
+            "keepFields": false
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "QAStoryPoints \\(sum\\) (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "QAStoryPoints \\(sum\\)",
+            "renamePattern": "Unassigned"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The elapsed time from when work is started to when it is completed.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "StoryPoints (sum)"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 11,
+        "x": 13,
+        "y": 13
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Dev Cycle Time (mean)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "disabled": true,
+          "id": "calculateField",
+          "options": {
+            "alias": "Elapsed",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Completed"
+                }
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Started"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "disabled": true,
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "Elapsed"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "disabled": true,
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "D",
+            "timeField": "Elapsed",
+            "useTimezone": true
+          }
+        },
+        {
+          "disabled": true,
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "Elapsed"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Engineer"
+              }
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "AgeInCurrentStatus": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": true,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": false,
+              "Engineer": false,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": true,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Project": true,
+              "QA": true,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": true,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": true,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderBy": [],
+            "orderByMode": "manual",
+            "renameByName": {
+              "Engineer": "",
+              "IssueKey": "",
+              "QA": ""
+            }
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "CycleTimeDays": {
+                "aggregations": [
+                  "mean"
+                ],
+                "operation": "aggregate"
+              },
+              "Elapsed": {
+                "aggregations": [
+                  "mean"
+                ],
+                "operation": "aggregate"
+              },
+              "Engineer": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "QA": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "QAStoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "StoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Engineer"
+            ],
+            "keepFields": false
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "CycleTimeDays \\(mean\\) (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "CycleTimeDays \\(mean\\)",
+            "renamePattern": "Unassigned"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The number of story points completed in a set time period, aggregated per day.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 55
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 14,
+      "options": {
+        "barRadius": 0.1,
+        "barWidth": 0.95,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Completed",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Dev Story Point Throughput /day (sum)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "dateFormat": "YYYY-MM-DD",
+                "destinationType": "string",
+                "targetField": "Completed",
+                "timezone": "utc"
+              },
+              {
+                "destinationType": "time",
+                "targetField": "Completed"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "AgeInCurrentStatus": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": false,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": true,
+              "Engineer": false,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": true,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Project": true,
+              "QA": true,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": true,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": false,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderBy": [],
+            "orderByMode": "manual",
+            "renameByName": {
+              "Engineer": "",
+              "IssueKey": "",
+              "QA": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Engineer"
+              }
+            ]
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Completed": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Engineer": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "QA": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "QAStoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "StoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Engineer"
+            ],
+            "keepFields": false,
+            "naming": {
+              "asLabels": true
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "StoryPoints \\(sum\\) (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "StoryPoints \\(sum\\)",
+            "renamePattern": "Unassigned"
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The number of QA story points completed in a set time period, aggregated per day.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 55
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "id": 19,
+      "options": {
+        "barRadius": 0.1,
+        "barWidth": 0.95,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Completed",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "QA Story Point Throughput /day (sum)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "dateFormat": "YYYY-MM-DD",
+                "destinationType": "string",
+                "targetField": "Completed",
+                "timezone": "utc"
+              },
+              {
+                "destinationType": "time",
+                "targetField": "Completed"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "AgeInCurrentStatus": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": false,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": true,
+              "Engineer": true,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": true,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Project": true,
+              "QA": false,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": false,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": true,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderBy": [],
+            "orderByMode": "manual",
+            "renameByName": {
+              "Engineer": "",
+              "IssueKey": "",
+              "QA": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "QA"
+              }
+            ]
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Completed": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Engineer": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "QA": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "QAStoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "StoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "QA"
+            ],
+            "keepFields": false,
+            "naming": {
+              "asLabels": true
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "QAStoryPoints \\(sum\\) (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "QAStoryPoints \\(sum\\)",
+            "renamePattern": "Unassigned"
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The number of story points completed in a set time period, aggregated per week.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 55
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 27
+      },
+      "id": 17,
+      "options": {
+        "barRadius": 0.05,
+        "barWidth": 0.95,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Completed",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Dev Story Point Throughput /week (sum)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "GGGG-[W]WW",
+            "timeField": "Completed",
+            "timezone": "utc",
+            "useTimezone": true
+          }
+        },
+        {
+          "disabled": true,
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "dateFormat": "GGGG-[W]WW",
+                "destinationType": "string",
+                "targetField": "Completed",
+                "timezone": "utc"
+              },
+              {
+                "destinationType": "time",
+                "targetField": "Completed"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "AgeInCurrentStatus": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": false,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": true,
+              "Engineer": false,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": true,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Project": true,
+              "QA": true,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": true,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": false,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderBy": [],
+            "orderByMode": "manual",
+            "renameByName": {
+              "Engineer": "",
+              "IssueKey": "",
+              "QA": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Engineer"
+              }
+            ]
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Completed": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Engineer": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "QA": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "QAStoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "StoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Engineer"
+            ],
+            "keepFields": false,
+            "naming": {
+              "asLabels": true
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^StoryPoints \\(sum\\)$",
+            "renamePattern": "Unassigned"
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "Completed",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^StoryPoints \\(sum\\) (.*)$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "Completed .*",
+            "renamePattern": "Week"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Week"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The number of QA story points completed in a set time period, aggregated per week.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 55
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 27
+      },
+      "id": 20,
+      "options": {
+        "barRadius": 0.05,
+        "barWidth": 0.95,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Completed",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "QA Story Point Throughput /week (sum)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "GGGG-[W]WW",
+            "timeField": "Completed",
+            "timezone": "utc",
+            "useTimezone": true
+          }
+        },
+        {
+          "disabled": true,
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "dateFormat": "GGGG-[W]WW",
+                "destinationType": "string",
+                "targetField": "Completed",
+                "timezone": "utc"
+              },
+              {
+                "destinationType": "time",
+                "targetField": "Completed"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "AgeInCurrentStatus": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": false,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": true,
+              "Engineer": true,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": true,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Project": true,
+              "QA": false,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": false,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": true,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderBy": [],
+            "orderByMode": "manual",
+            "renameByName": {
+              "Engineer": "",
+              "IssueKey": "",
+              "QA": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "QA"
+              }
+            ]
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Completed": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Engineer": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "QA": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "QAStoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              },
+              "StoryPoints": {
+                "aggregations": [
+                  "sum"
+                ],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "QA"
+            ],
+            "keepFields": false,
+            "naming": {
+              "asLabels": true
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^QAStoryPoints \\(sum\\)$",
+            "renamePattern": "Unassigned"
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "Completed",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "^QAStoryPoints \\(sum\\) (.*)$",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "Completed .*",
+            "renamePattern": "Week"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Week"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The number of work item completed in a set time period, aggregated per day.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed+area"
+            }
+          },
+          "fieldMinMax": false,
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "View Space ${__field.displayName}",
+              "url": "https://lirvanalabs.atlassian.net/browse/${__field.displayName}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 55
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 36
+      },
+      "id": 4,
+      "options": {
+        "barRadius": 0.1,
+        "barWidth": 0.95,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Completed",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 100
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Work Item Throughput /day (count)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "dateFormat": "YYYY-MM-DD",
+                "destinationType": "string",
+                "targetField": "Completed",
+                "timezone": "utc"
+              },
+              {
+                "dateFormat": "YYYY-MM-DD",
+                "destinationType": "time",
+                "targetField": "Completed"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Completed": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "CompletedDate": {
+                "aggregations": []
+              },
+              "IssueKey": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "Project": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Project"
+            ],
+            "keepFields": false,
+            "naming": {
+              "asLabels": false
+            }
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "Completed",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "IssueKey \\(count\\) (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "orderBy": [
+              {
+                "desc": false,
+                "name": "name",
+                "type": "label"
+              }
+            ],
+            "orderByMode": "auto",
+            "renameByName": {
+              "KIDS": "",
+              "PLAT": ""
+            }
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The number of work item completed in a set time period, aggregated per week.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed+area"
+            }
+          },
+          "fieldMinMax": false,
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "View Work Item ${__data.fields.IssueKey}",
+              "url": "https://lirvanalabs.atlassian.net/browse/${__data.fields.IssueKey}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 55
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 36
+      },
+      "id": 10,
+      "options": {
+        "barRadius": 0.05,
+        "barWidth": 0.95,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "Completed",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Work Item Throughput /week (count)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": false,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": true,
+              "Engineer": true,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": true,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "Project": false,
+              "QA": true,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": true,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": true,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderByMode": "manual",
+            "renameByName": {
+              "Project": "",
+              "Quantile": ""
+            }
+          }
+        },
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "GGGG-[W]WW",
+            "timeField": "Completed",
+            "timezone": "utc",
+            "useTimezone": true
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Completed"
+              }
+            ]
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Completed": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "IssueKey": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "IssueType": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "groupby"
+              },
+              "Project": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "Project \\(count\\)",
+            "renamePattern": "Count"
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Project"
+            ],
+            "keepFields": false,
+            "naming": {
+              "asLabels": false
+            }
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "Completed",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "(.*) Count",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The elapsed time from when work is started to when it is completed.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "points",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 7,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "symlog"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed+area"
+            }
+          },
+          "fieldMinMax": false,
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "View Work Item ${__data.fields.IssueKey}",
+              "url": "https://lirvanalabs.atlassian.net/browse/${__data.fields.IssueKey}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "d"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 45
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "hoverProximity": 5,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Cycle Time By Project",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "configFromData",
+          "options": {
+            "applyTo": {
+              "id": "byType",
+              "options": "number"
+            },
+            "configRefId": "A",
+            "mappings": [
+              {
+                "fieldName": "Quantile",
+                "handlerArguments": {
+                  "threshold": {
+                    "color": "light-red"
+                  }
+                },
+                "handlerKey": "threshold1",
+                "reducerId": "mean"
+              },
+              {
+                "fieldName": "Summary",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "IssueType",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Created",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Started",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "LeadTimeDays",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "ActiveTimeDays",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "FlowEfficiency",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Assignee",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "AssigneeEmail",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "AssigneeID",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Engineer",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "EngineerEmail",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "EngineerID",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "QA",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "QAEmail",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "QAID",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "StoryPoints",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "QAStoryPoints",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Status",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Resolution",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "AgeInCurrentStatus",
+                "handlerKey": "__ignore"
+              }
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "AgeInCurrentStatus": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": false,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": false,
+              "Engineer": true,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": false,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": true,
+              "QA": true,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": true,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": true,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Project": "",
+              "Quantile": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Project"
+              }
+            ]
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Project"
+            ],
+            "keepFields": true,
+            "naming": {
+              "asLabels": true
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "CycleTimeDays (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "(IssueKey|Project|Completed|IssueLink) (.*)[\\s\\S]",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The time from work item creation to completion.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "points",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 7,
+            "scaleDistribution": {
+              "log": 10,
+              "type": "symlog"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed+area"
+            }
+          },
+          "fieldMinMax": false,
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "View Work Item ${__data.fields.IssueKey}",
+              "url": "https://lirvanalabs.atlassian.net/browse/${__data.fields.IssueKey}"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "d"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Completed"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time:MM/DD"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 45
+      },
+      "id": 18,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "hoverProximity": 5,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Lead Time By Project",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "equal",
+                  "options": {
+                    "value": "Done"
+                  }
+                },
+                "fieldName": "Status"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "configFromData",
+          "options": {
+            "applyTo": {
+              "id": "byType",
+              "options": "number"
+            },
+            "configRefId": "A",
+            "mappings": [
+              {
+                "fieldName": "Quantile",
+                "handlerArguments": {
+                  "threshold": {
+                    "color": "light-red"
+                  }
+                },
+                "handlerKey": "threshold1",
+                "reducerId": "mean"
+              },
+              {
+                "fieldName": "Summary",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "IssueType",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Created",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Started",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "ActiveTimeDays",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "FlowEfficiency",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Assignee",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "AssigneeEmail",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "AssigneeID",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Engineer",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "EngineerEmail",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "EngineerID",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "QA",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "QAEmail",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "QAID",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "StoryPoints",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "QAStoryPoints",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Status",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "Resolution",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "CycleTimeDays",
+                "handlerKey": "__ignore"
+              },
+              {
+                "fieldName": "AgeInCurrentStatus",
+                "handlerKey": "__ignore"
+              }
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "ActiveTimeDays": true,
+              "AgeInCurrentStatus": true,
+              "Assignee": true,
+              "AssigneeEmail": true,
+              "AssigneeID": true,
+              "Completed": false,
+              "CompletedDate": true,
+              "Created": true,
+              "CycleTimeDays": true,
+              "Engineer": true,
+              "EngineerEmail": true,
+              "EngineerID": true,
+              "FlowEfficiency": true,
+              "IssueKey": false,
+              "IssueLink": true,
+              "IssueType": true,
+              "LeadTimeDays": false,
+              "QA": true,
+              "QAEmail": true,
+              "QAID": true,
+              "QAStoryPoints": true,
+              "Quantile": true,
+              "Resolution": true,
+              "Started": true,
+              "Status": true,
+              "StoryPoints": true,
+              "Summary": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Project": "",
+              "Quantile": ""
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "Project"
+              }
+            ]
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Project"
+            ],
+            "keepFields": true,
+            "naming": {
+              "asLabels": true
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "LeadTimeDays (.*)",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "(IssueKey|Project|Completed|IssueLink) (.*)[\\s\\S]",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The proportion of each work type delivered in a set time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "fieldMinMax": false,
+          "links": [],
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 54
+      },
+      "id": 6,
+      "options": {
+        "displayLabels": [
+          "name",
+          "value"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Work Type Profile (count)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Completed"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Completed": {
+                "aggregations": [
+                  "firstNotNull"
+                ]
+              },
+              "CompletedDate": {
+                "aggregations": []
+              },
+              "IssueKey": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "IssueType": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Project": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "(IssueKey.*)",
+            "renamePattern": " "
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "IssueType"
+            ],
+            "keepFields": true,
+            "naming": {
+              "asLabels": false
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "(IssueType|Project|Count).*",
+            "renamePattern": "$1"
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "description": "The proportion of each project's delivery in a set time period.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "fieldMinMax": false,
+          "links": [
+            {
+              "targetBlank": true,
+              "title": "View Space ${__field.displayName}",
+              "url": "https://lirvanalabs.atlassian.net/browse/${__field.displayName}"
+            }
+          ],
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 54
+      },
+      "id": 5,
+      "options": {
+        "displayLabels": [
+          "name",
+          "value"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 3,
+          "refId": "A"
+        }
+      ],
+      "title": "Project Profile (count)",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "isNull",
+                  "options": {}
+                },
+                "fieldName": "Completed"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Completed": {
+                "aggregations": [
+                  "firstNotNull"
+                ]
+              },
+              "CompletedDate": {
+                "aggregations": []
+              },
+              "IssueKey": {
+                "aggregations": [
+                  "count"
+                ],
+                "operation": "aggregate"
+              },
+              "IssueType": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Project": {
+                "aggregations": [],
+                "operation": "groupby"
+              }
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "(IssueKey.*)",
+            "renamePattern": " "
+          }
+        },
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Project"
+            ],
+            "keepFields": true,
+            "naming": {
+              "asLabels": false
+            }
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*(IssueType|Project|IssueKey \\(count\\)).*",
+            "renamePattern": "$1"
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "IssueType",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "IssueType",
+            "renamePattern": "zzzsorter"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Project": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "orderBy": [
+              {
+                "desc": false,
+                "type": "name"
+              }
+            ],
+            "orderByMode": "auto",
+            "renameByName": {
+              "Project": ""
+            }
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 62
+      },
+      "id": 9,
+      "panels": [
+        {
+          "datasource": {
+            "type": "arc-grafanajira-datasource",
+            "uid": "arc-grafanajira-datasource"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 55
+          },
+          "id": 3,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true
+          },
+          "pluginVersion": "12.3.1",
+          "targets": [
+            {
+              "activeStatuses": "In Progress, Changes Requested, Under Art Review, Under Engineering Review, Reviews Complete, Ready for QA, Ready for QA as Epic, Under QA Review, Under QA Review as Epic, QA Changes Requested, Ready for Release, In Release Testing",
+              "datasource": {
+                "type": "arc-grafanajira-datasource",
+                "uid": "arc-grafanajira-datasource"
+              },
+              "endStatus": "${end_status}",
+              "jqlQuery": "project in ('ADMIN','QA','PLAT','KIDS','TEACH','LABS')",
+              "metric": "issue_flow",
+              "quantile": 85,
+              "refId": "A",
+              "startStatus": "${start_status}"
+            }
+          ],
+          "title": "raw",
+          "type": "table"
+        }
+      ],
+      "title": "Raw Data",
+      "type": "row"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Jira Flow Metrics",
+  "uid": "f4eddd49-8295-4922-8293-05a01d9f11d5",
+  "version": 55
+}

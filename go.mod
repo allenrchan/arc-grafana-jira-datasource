@@ -1,5 +1,4 @@
-module github.com/achan/grafana-jira-datasource
-
+module github.com/allenrchan/arc-grafana-jira-datasource
 
 go 1.25.5
 

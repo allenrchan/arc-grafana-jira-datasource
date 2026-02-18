@@ -32,6 +32,18 @@ export function EndStatusSelect({datasource, query, onChange}: StatusSelectProps
     )
 }
 
+export function ActiveStatusSelect({datasource, query, onChange}: StatusSelectProps) {
+    const onStatusChange = (event: ChangeEvent<HTMLInputElement>) => {
+        onChange({...query, activeStatuses: event.target.value});
+    };
+
+    return (
+        <InlineField label={'Active Statuses'} tooltip="Comma separated statuses to consider 'Active' for Flow Efficiency (e.g. In Progress, Review)">
+            <Input onChange={onStatusChange} value={query.activeStatuses} placeholder="e.g. In Progress, Review" />
+        </InlineField>
+    )
+}
+
 export function QueryEditor({datasource, query, onChange, onRunQuery}: Props) {
 
     const { loading, queryTypes, error } = useMetricTypes(datasource);
@@ -59,12 +71,16 @@ export function QueryEditor({datasource, query, onChange, onRunQuery}: Props) {
             <InlineField label="Metric" htmlFor="query-metric" tooltip="Which metric you want to see? " invalid={!metric} error={"this field is required"} required={true}>
                 <Select inputId="query-metric" onChange={onMetricChange} value={metric} options={queryTypes} isLoading={loading} disabled={!!error} />
             </InlineField>
-            {metric === METRICS.CYCLE_TIME
+            {(metric === METRICS.CYCLE_TIME || metric === METRICS.ISSUE_FLOW)
                 ? <StartStatusSelect datasource={datasource}  onChange={onChange} query={query} ></StartStatusSelect>
                 : ''
             }
-            {metric === METRICS.CYCLE_TIME
+            {(metric === METRICS.CYCLE_TIME || metric === METRICS.ISSUE_FLOW)
                 ? <EndStatusSelect datasource={datasource}  onChange={onChange}  query={query} ></EndStatusSelect>
+                : ''
+            }
+            {metric === METRICS.ISSUE_FLOW
+                ? <ActiveStatusSelect datasource={datasource} onChange={onChange} query={query} />
                 : ''
             }
             {metric === METRICS.CYCLE_TIME &&

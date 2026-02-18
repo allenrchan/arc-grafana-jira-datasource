@@ -17,6 +17,9 @@ type Client struct {
 
 func NewClient(baseURL, username, token string) *Client {
 	baseURL = strings.TrimRight(baseURL, "/")
+	if !strings.HasPrefix(baseURL, "http://") && !strings.HasPrefix(baseURL, "https://") {
+		baseURL = "https://" + baseURL
+	}
 	
 	auth := username + ":" + token
 	encodedAuth := base64.StdEncoding.EncodeToString([]byte(auth))
@@ -106,16 +109,19 @@ type Item struct {
 
 func (c *Client) SearchChangelogs(jql string) ([]Issue, error) {
 	allIssues := []Issue{}
-	maxResults := 50 // Default batch size
+	maxResults := 100 // Optimized batch size for Jira Cloud (max 100)
 	nextPageToken := ""
 
 	for {
 		params := url.Values{}
 
 		reqBody := JQLSearchRequest{
-			JQL:           jql,
-			MaxResults:    maxResults,
-			Fields:        []string{"key", "summary", "issuetype", "status", "project"},
+			JQL:        jql,
+			MaxResults: maxResults,
+			Fields: []string{
+				"key", "summary", "issuetype", "status", "project", "created", "resolution", "statuscategorychangedate",
+				"assignee", "customfield_10028", "customfield_10603", "customfield_10943", "customfield_10641",
+			},
 			Expand:        "changelog",
 			NextPageToken: nextPageToken,
 		}
@@ -123,10 +129,14 @@ func (c *Client) SearchChangelogs(jql string) ([]Issue, error) {
 		if err != nil {
 			return nil, err
 		}
-		defer resp.Body.Close()
+		defer func() {
+			if cerr := resp.Body.Close(); cerr != nil && err == nil {
+				err = cerr
+			}
+		}()
 
 		if resp.StatusCode != http.StatusOK {
-			return nil, fmt.Errorf("Jira API returned status: %s", resp.Status)
+			return nil, fmt.Errorf("jira API returned status: %s", resp.Status)
 		}
 
 		var result SearchResults
@@ -150,7 +160,9 @@ func (c *Client) Myself() error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("health check failed: %s", resp.Status)

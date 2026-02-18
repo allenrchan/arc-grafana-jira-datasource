@@ -1,15 +1,15 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
   "type": "datasource",
-    "name": "Grafana Jira Datasource",
-  "id": "achan-grafanajira-datasource",
+    "name": "ARC Jira Datasource",
+  "id": "achan-arcjira-datasource",
   "backend": true,
-  "executable": "gpx_grafana_jira_datasource",
+  "executable": "gpx_achan_arcjira_datasource",
   "metrics": true,
   "info": {
     "description": "Grafana datasource plugin for JIRA",
     "author": {
-      "name": "Grafana Labs"
+      "name": "Allen R. Chan"
     },
     "keywords": ["datasource"],
     "logos": {
@@ -30,7 +30,7 @@
   "includes": [
     {
       "type": "dashboard",
-      "path": "dashboards/overview.json"
+      "path": "dashboards/jira_flow_metrics.json"
     }
   ]
 }

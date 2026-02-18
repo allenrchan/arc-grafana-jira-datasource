@@ -21,12 +21,14 @@ export class DataSource extends DataSourceWithBackend<JiraQuery, MyDataSourceOpt
             jqlQuery: getTemplateSrv().replace(query.jqlQuery, scopedVars),
             startStatus: getTemplateSrv().replace(query.startStatus, scopedVars),
             endStatus: getTemplateSrv().replace(query.endStatus, scopedVars),
+            activeStatuses: getTemplateSrv().replace(query.activeStatuses, scopedVars),
         };
     }
 
     getAvailableMetricTypes(): Promise<QueryTypesResponse> {
         const metrics = [
-            {value: METRICS.CYCLE_TIME, label: 'cycle time'},
+            {value: METRICS.ISSUE_FLOW, label: 'Flow Metrics'},
+            {value: METRICS.CYCLE_TIME, label: 'Cycle Time (Legacy)'},
             {value: METRICS.CHANGELOG_RAW, label: 'change log - raw data'},
             {value: METRICS.JQL, label: 'JQL (Raw Issue Data)'},
             {value: METRICS.NONE, label: 'None'},
