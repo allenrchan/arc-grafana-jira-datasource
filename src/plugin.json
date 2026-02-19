@@ -7,11 +7,11 @@
   "executable": "gpx_achan_arcjira_datasource",
   "metrics": true,
   "info": {
-    "description": "Grafana datasource plugin for JIRA",
+    "description": "Project and Team metrics from Jira",
     "author": {
       "name": "Allen R. Chan"
     },
-    "keywords": ["datasource"],
+    "keywords": ["jira", "metrics", "jql", "datasource"],
     "logos": {
       "small": "img/logo.svg",
       "large": "img/logo.svg"

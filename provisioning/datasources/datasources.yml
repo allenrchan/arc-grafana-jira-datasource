@@ -1,7 +1,7 @@
 apiVersion: 1
 
 datasources:
-  - name: 'achan-arcjira-datasource'
+  - name: 'ARC Jira Datasource'
     type: 'achan-arcjira-datasource'
     access: proxy
     isDefault: false
